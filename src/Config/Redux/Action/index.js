@@ -9,7 +9,7 @@ export const registerApi = (data) => (dispatch) => {
         dispatch({type: 'CHANGE_LOADING', value : true})
         firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
         .then(res => {
-            console.log(`success ${res}`)
+            // console.log(`success ${res}`)
             dispatch({type: 'CHANGE_LOADING', value: false})
             resolve(true)
         })
@@ -60,10 +60,16 @@ export const addDataToApi = (data) => (dispatch) => {
         date : data.date
     })
 }
-// export const getDataFromApi = () => (dispatch) => {
-//         database().ref('/users/' + data.userId).once('value')
-//         .then(function(snapshot) {
-//             var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-//             // ...
-//         })
-// }
+export const getDataFromApi = (userId) => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        const urlNotes = database.ref(`note/${userId}`)
+        urlNotes.on('value', function(snapshot) {
+            const data = []
+            snapshot.forEach(element => {
+                data.push({content: element.val().content, title: element.val().title})
+            });
+            dispatch({type:"SET_NOTE", value: data})
+            resolve(snapshot.val())
+        });
+    })
+}

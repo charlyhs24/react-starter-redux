@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './dashboard.scss'
 import { connect } from 'react-redux'
-import { addDataToApi } from '../../../Config/Redux/Action'
+import { addDataToApi, getDataFromApi } from '../../../Config/Redux/Action'
 class Dashboard extends Component {
     constructor(props){
         super(props)
@@ -17,6 +17,10 @@ class Dashboard extends Component {
             [name] : value
         })
     }
+    componentDidMount = async () => {
+        const userData = JSON.parse(localStorage.getItem("userData"))
+        const res = await this.props.getNotes(userData.uid)
+    }
     handleSaveNotes = () => {
         const { title, content } = this.state
         const uid = JSON.parse(localStorage.getItem("userData")).uid
@@ -26,11 +30,11 @@ class Dashboard extends Component {
             date    : new Date(),
             userId  : uid
         }
-        console.log(data.userId)
         this.props.saveNotes(data)
     }
     render() {
-        // console.log(this.props.userData.uid)
+        const { note } = this.props
+        console.log(note)
         return (
             <div className="container">
                 <div className="input_form">
@@ -38,19 +42,25 @@ class Dashboard extends Component {
                     <textarea name="content" onChange={this.handleChage} placeholder="content" className="input_content"></textarea>
                     <button className="save_btn" onClick={this.handleSaveNotes}>Simpan</button>
                 </div>
-                <div className="card-content">
-                    <p className="title">Title</p>
-                    <p className="date">21 sept 2019</p>
-                    <p className="content">Content Notes</p>
-                </div>
+                {
+                    note.map((response, idx) => (
+                        <div key={idx} className="card_content">
+                            <p className="title">{response.title}</p>
+                            <p className="date">21 sept 2019</p>
+                            <p className="content">{response.content}</p>
+                        </div>
+                    ))
+                }
             </div>
         )
     }
 }
 const reduxState = (state) => ({
-    userData : state.user
+    userData : state.user,
+    note : state.note
 })
 const reduxDispatch = (dispatch) => ({
-    saveNotes : (data) => dispatch(addDataToApi(data))
+    saveNotes : (data) => dispatch(addDataToApi(data)),
+    getNotes : (userID) => dispatch(getDataFromApi(userID))
 })
 export default connect(reduxState,reduxDispatch) (Dashboard)
