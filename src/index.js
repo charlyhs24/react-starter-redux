@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './Container/Pages/App/App';
 import * as serviceWorker from './serviceWorker';
+import firebase from './Config/Firebase'
 
+console.log(firebase)
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
