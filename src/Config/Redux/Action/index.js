@@ -60,11 +60,10 @@ export const addDataToApi = (data) => (dispatch) => {
         date : data.date
     })
 }
-export const getDataFromApi = () => (dispatch) => {
-        database().ref('/users/' + data.userId).once('value')
-        .then(function(snapshot) {
-            var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-            // ...
-            resolve(snapsh)
-        })
-}
+// export const getDataFromApi = () => (dispatch) => {
+//         database().ref('/users/' + data.userId).once('value')
+//         .then(function(snapshot) {
+//             var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+//             // ...
+//         })
+// }

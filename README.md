@@ -1,3 +1,10 @@
+
+## Requirement Tools
+* react-redux
+* react-thunk
+* react-router-dom
+* firebase
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
